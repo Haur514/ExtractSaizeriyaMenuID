@@ -1,10 +1,12 @@
 import './App.css';
-import InputForm from './inform/InputForm';
+import Description from './Description';
 
 function App() {
+
   return (
-    <div className="text-center">
-      <InputForm />
+    <div className="text-center p-2">
+      <Description />
+      
     </div>
   );
 }
