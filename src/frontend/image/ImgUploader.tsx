@@ -5,34 +5,39 @@ import ImgUploadButton from "./ImgUploadButton";
 
 const IMAGE_ID = 'image';
 
-async function generateImageSource(
+function generateImageSource(
   files: FileList, 
-  setFileNames: React.Dispatch<React.SetStateAction<string[]>>, 
-  setImageSources: React.Dispatch<React.SetStateAction<string[]>>){
+  setPrevImage: React.Dispatch<React.SetStateAction<PrevImage[]>>){
   const fileNames: string[] = [];
   const imageSources: string[] = [];
-  for(const file of Array.from(files)){
-    console.log("OK")
-    console.log(file);
+  const prevImages: PrevImage[] = [];
+  for(let i = 0; i < files.length; i++){
+    const file = files[i];
     const fileReader = new FileReader();
     fileNames.push(file.name);
     fileReader.onload = () => {
       imageSources.push(fileReader.result as string);
-    }
+      prevImages.push({
+        fileName: file.name,
+        imageSource: fileReader.result as string,
+      })
+      setPrevImage(prevImages);
+    };
+    fileReader.readAsDataURL(file);
   }
-  setFileNames(fileNames);
-  setImageSources(imageSources);
-  console.log("hoge")
-  console.log(fileNames);
-  console.log(imageSources[0]);
+}
+
+type PrevImage = {
+  fileName: string;
+  imageSource: string;
 }
 
 export default function ImgUploader() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [imageFiles, setImageFiles] = useState<FileList | null>(null);
-  const [fileNames, setFileNames] = useState<string[]>([]);
-  const [imageSources, setImageSources] = useState<string[]>([])
+
+  const [prevImages, setPrevImages] = useState<PrevImage[]>([]);
 
   const selectFile = () => {
     if (!fileInputRef.current) return;
@@ -44,13 +49,13 @@ export default function ImgUploader() {
     const files = e.target.files;
     if (!files || files.length <= 0) return;
 
-    generateImageSource(files, setFileNames, setImageSources);
+    generateImageSource(files, setPrevImages);
     setImageFiles(files);
   };
 
   useEffect(() => {
     if(imageFiles != null){
-      generateImageSource(imageFiles, setFileNames, setImageSources);
+      generateImageSource(imageFiles, setPrevImages);
     }
   },[imageFiles]);
 
@@ -74,8 +79,12 @@ export default function ImgUploader() {
       </div>
     </form>
 
-    <ImgPreview fileName={fileNames[0]} imageSource={imageSources[0]} />
-    <ImgPreview fileName={fileNames[1]} imageSource={imageSources[1]} />
+    {prevImages.map((e) => {
+      return(
+        <ImgPreview fileName={e.fileName} imageSource={e.imageSource} />
+      )
+    })}
+ 
     </div>
   );
 }
