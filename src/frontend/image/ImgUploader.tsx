@@ -1,5 +1,6 @@
 import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
+import ImgTranslater from "../../backend/ImgTranslater";
 import ImgPreview from "./ImgPreview";
 import ImgUploadButton from "./ImgUploadButton";
 
@@ -32,12 +33,19 @@ const onClickExport = () => {
   const target = document.getElementById("prev-image");
   if(target != null){
     html2canvas(target).then(canvas => {
-      const targetImgUri = canvas.toDataURL("img/jpeg", 1.0);
+      const targetImgUri = canvas.toDataURL("img/jpeg", 0.1);
       saveAsImage(targetImgUri);
     });
   } 
 }
 
+function updatePrevImage(prevImages: PrevImage[], file: File, imageSource: string, setPrevImage: Function){
+  prevImages.push({
+    fileName: file.name,
+    imageSource: imageSource
+  })
+  setPrevImage(prevImages);
+}
 
 function generateImageSource(
   files: FileList, 
@@ -51,11 +59,9 @@ function generateImageSource(
     fileNames.push(file.name);
     fileReader.onload = () => {
       imageSources.push(fileReader.result as string);
-      prevImages.push({
-        fileName: file.name,
-        imageSource: fileReader.result as string,
-      })
-      setPrevImage(prevImages);
+      ImgTranslater.TranslateImageBit(fileReader.result as string, function(is: string){
+        updatePrevImage(prevImages, file, is, setPrevImage)
+      });
     };
     fileReader.readAsDataURL(file);
   }
@@ -106,12 +112,14 @@ export default function ImgUploader() {
       </div>
     </form>
 
-    <div id="prev-image" className="w-full">
+    <div className="h-96 overflow-scroll">
+    <div id="prev-image" className="w-1/3">
       {prevImages.map((e) => {
         return(
           <ImgPreview prevImage={e} />
         )
       })}
+    </div>
     </div>
     <button onClick={() => onClickExport()}>PING</button>
     </div>

@@ -15,7 +15,7 @@ class IdExtracter{
 
     // 0以上の整数か？
     private static isNumber(val: string){
-    var regexp = new RegExp(/^[1-9]+(\[0-9]+)?$/);
+    var regexp = new RegExp(/^[0-9]+(\.[0-9]+)?$/);
     return regexp.test(val);
   }
 }
