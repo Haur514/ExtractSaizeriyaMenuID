@@ -1,9 +1,43 @@
+import html2canvas from "html2canvas";
 import React, { useEffect, useRef, useState } from "react";
 import ImgPreview from "./ImgPreview";
 import ImgUploadButton from "./ImgUploadButton";
 
-
 const IMAGE_ID = 'image';
+
+const saveAsImage = (uri: string) => {
+  const downloadLink = document.createElement("a");
+
+  if (typeof downloadLink.download === "string") {
+    downloadLink.href = uri;
+
+    // ファイル名
+    downloadLink.download = "component.jpeg";
+
+    // Firefox では body の中にダウンロードリンクがないといけないので一時的に追加
+    document.body.appendChild(downloadLink);
+
+    // ダウンロードリンクが設定された a タグをクリック
+    downloadLink.click();
+
+    // Firefox 対策で追加したリンクを削除しておく
+    document.body.removeChild(downloadLink);
+  } else {
+    window.open(uri);
+  }
+}
+
+const onClickExport = () => {
+  // 画像に変換する component の id を指定
+  const target = document.getElementById("prev-image");
+  if(target != null){
+    html2canvas(target).then(canvas => {
+      const targetImgUri = canvas.toDataURL("img/jpeg", 1.0);
+      saveAsImage(targetImgUri);
+    });
+  } 
+}
+
 
 function generateImageSource(
   files: FileList, 
@@ -64,27 +98,22 @@ export default function ImgUploader() {
     <form>
       <div onClick={selectFile} role="presentation">
         画像をアップロード
-        {/* ダミーインプット: 見えない */}
         <ImgUploadButton
           fileInputRef={fileInputRef}
           onChange={handleFileChange}
           id={IMAGE_ID}
         />
       </div>
-
-      {/* キャンセルボタン */}
-      <div>
-        <button>× キャンセル</button>
-        <button type="submit">画像を送信</button>
-      </div>
     </form>
 
-    {prevImages.map((e) => {
-      return(
-        <ImgPreview fileName={e.fileName} imageSource={e.imageSource} />
-      )
-    })}
- 
+    <div id="prev-image" className="w-full">
+      {prevImages.map((e) => {
+        return(
+          <ImgPreview prevImage={e} />
+        )
+      })}
+    </div>
+    <button onClick={() => onClickExport()}>PING</button>
     </div>
   );
 }

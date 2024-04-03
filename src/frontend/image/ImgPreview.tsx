@@ -1,16 +1,20 @@
-
 type Props = {
-    fileName: string,
-    imageSource: string | undefined;
+  prevImage: PrevImage;
 }
-export default function ImgPreview({fileName, imageSource}: Props) {
+
+type PrevImage = {
+  fileName: string;
+  imageSource: string;
+}
+
+export default function ImgPreview({prevImage}: Props) {
 
   return (
-    <div className="w-44">
-    {fileName ? (
-        <img src={imageSource} alt="アップロード画像"/>
+    <div className="w-full object-contain" key={prevImage.imageSource}>
+    {prevImage.fileName ? (
+      <img className="w-full" src={prevImage.imageSource} alt="アップロード画像"/>
     ) : (
-        '+ 画像をアップロード'
+      '+ 画像をアップロード'
     )}
     </div>
   );
