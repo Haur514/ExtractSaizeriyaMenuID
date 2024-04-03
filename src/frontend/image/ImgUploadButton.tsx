@@ -17,14 +17,13 @@ export default function ImgUploadButton({
 }: Props) {
   return (
     <div className="w-full p-2">
-      <form className="border border-orange-600">
+      <form>
         <input 
           type="file" 
           accept="image/*" 
           multiple={true} 
           onChange={onChange}
-          className="border border-black w-3/4 m-2 p-2"/>      
-        <input className="btn btn-blue border border-black m-2 p-2" type="submit" />
+          className="bg-gray-300 p-1 border rounded border-gray-900"/>      
       </form>
     </div>
   );

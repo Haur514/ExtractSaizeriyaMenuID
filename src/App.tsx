@@ -1,5 +1,5 @@
 import './App.css';
-import Description from './Description';
+import Description from './frontend/Description';
 
 function App() {
 

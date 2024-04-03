@@ -103,7 +103,6 @@ export default function ImgUploader() {
     <div>
     <form>
       <div onClick={selectFile} role="presentation">
-        画像をアップロード
         <ImgUploadButton
           fileInputRef={fileInputRef}
           onChange={handleFileChange}
@@ -111,8 +110,9 @@ export default function ImgUploader() {
         />
       </div>
     </form>
+    <button className="bg-gray-300 border p-1 m-2 rounded border-gray-900" type="button" onClick={() => onClickExport()}>ダウンロード</button>
 
-    <div className="h-96 overflow-scroll">
+    <div className="max-h-96 overflow-scroll">
     <div id="prev-image" className="w-1/3">
       {prevImages.map((e) => {
         return(
@@ -121,7 +121,6 @@ export default function ImgUploader() {
       })}
     </div>
     </div>
-    <button onClick={() => onClickExport()}>PING</button>
     </div>
   );
 }

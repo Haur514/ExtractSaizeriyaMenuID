@@ -17,7 +17,7 @@ export default function InputForm({setMenuIds}: Props) {
 
   return (
     <div className="w-full p-2">
-      <form onSubmit={handleSubmit(onSubmit)} className="border border-orange-600">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <input {...register("originalText")} className="border border-black w-3/4 m-2 p-2"/>      
         <input className="btn btn-blue border border-black m-2 p-2" type="submit" />
       </form>
