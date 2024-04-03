@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/extract_saizeriya_menuid/static/css/main.f7fe2e21.css",
+    "main.js": "/extract_saizeriya_menuid/static/js/main.56485bd6.js",
+    "static/js/453.a999c2b0.chunk.js": "/extract_saizeriya_menuid/static/js/453.a999c2b0.chunk.js",
+    "index.html": "/extract_saizeriya_menuid/index.html",
+    "main.f7fe2e21.css.map": "/extract_saizeriya_menuid/static/css/main.f7fe2e21.css.map",
+    "main.56485bd6.js.map": "/extract_saizeriya_menuid/static/js/main.56485bd6.js.map",
+    "453.a999c2b0.chunk.js.map": "/extract_saizeriya_menuid/static/js/453.a999c2b0.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f7fe2e21.css",
+    "static/js/main.56485bd6.js"
+  ]
+}
